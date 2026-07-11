@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-plex);
+  --font-display: var(--font-archivo);
+
+  --color-paper: oklch(98.2% 0.004 90);
+  --color-card: oklch(99.3% 0.002 90);
+  --color-ink: oklch(16% 0.005 90);
+  --color-muted: oklch(40% 0.005 90);
+  --color-faint: oklch(55% 0.01 90);
+  --color-line: oklch(88% 0.005 90);
+  --color-danger: oklch(53% 0.19 25);
+  --color-accent: #7c3aed;
+}
+
+:root {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: oklch(85% 0.08 260);
+}
