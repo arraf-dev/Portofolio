@@ -1,4 +1,12 @@
+import fs from "fs";
+import path from "path";
+
 const stack = ["Laravel", "Livewire", "Tailwind CSS", "React / Next.js", "MySQL"];
+
+// Upload foto ke public/foto.jpg (atau .png) lalu redeploy — otomatis menggantikan inisial
+const photo = ["foto.jpg", "foto.png"].find((f) =>
+  fs.existsSync(path.join(process.cwd(), "public", f))
+);
 
 export default function About() {
   return (
@@ -12,12 +20,21 @@ export default function About() {
       <h2 className="mb-8 font-display text-[clamp(1.75rem,3.6vw,2.625rem)] font-extrabold tracking-tight">
         Tentang Saya
       </h2>
-      <div className="grid items-start gap-12 md:grid-cols-[200px_1fr]">
+      <div className="grid items-start gap-8 md:grid-cols-[200px_1fr] md:gap-12">
         <div className="flex flex-col gap-3.5">
-          {/* Ganti div ini dengan <Image> foto asli di public/foto.jpg */}
-          <div className="flex h-[132px] w-[132px] items-center justify-center rounded-full bg-ink font-display text-[38px] font-extrabold text-paper">
-            AR
-          </div>
+          {photo ? (
+            <img
+              src={`/${photo}`}
+              alt="Foto Abdul Rafi"
+              width={132}
+              height={132}
+              className="h-[132px] w-[132px] rounded-full border-[1.5px] border-line object-cover"
+            />
+          ) : (
+            <div className="flex h-[132px] w-[132px] items-center justify-center rounded-full bg-ink font-display text-[38px] font-extrabold text-paper">
+              AR
+            </div>
+          )}
           <a
             href="https://github.com/arraf-dev"
             target="_blank"

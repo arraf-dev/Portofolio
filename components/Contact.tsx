@@ -57,7 +57,7 @@ export default function Contact() {
       <h2 className="font-display text-[clamp(1.75rem,3.6vw,2.625rem)] font-extrabold tracking-tight">
         Kontak
       </h2>
-      <div className="mt-7 grid gap-12 md:grid-cols-[1fr_1.2fr]">
+      <div className="mt-7 grid gap-8 md:grid-cols-[1fr_1.2fr] md:gap-12">
         <div>
           <p className="max-w-[380px] text-[16.5px] leading-relaxed text-muted">
             Punya kebutuhan website atau sistem informasi? Ceritakan saja dulu —
@@ -84,7 +84,7 @@ export default function Contact() {
           </p>
         </div>
 
-        <div className="rounded-2xl border-[1.5px] border-line bg-card p-8">
+        <div className="rounded-2xl border-[1.5px] border-line bg-card p-5 sm:p-8">
           {submitted ? (
             <div className="flex flex-col items-start gap-3.5 py-5">
               <div className="font-display text-xl font-extrabold">

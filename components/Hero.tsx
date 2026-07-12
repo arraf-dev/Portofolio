@@ -18,16 +18,16 @@ export default function Hero() {
           dan organisasi kecil lainnya.
         </p>
       </div>
-      <div className="mt-9 flex flex-wrap gap-3.5">
+      <div className="mt-9 flex flex-col gap-3.5 sm:flex-row sm:flex-wrap">
         <a
           href="#kontak"
-          className="rounded-lg bg-accent px-7 py-[15px] text-[15px] font-bold text-white"
+          className="rounded-lg bg-accent px-7 py-[15px] text-center text-[15px] font-bold text-white"
         >
           Hubungi Saya
         </a>
         <a
           href="#projects"
-          className="rounded-lg border-[1.5px] border-ink px-7 py-[15px] text-[15px] font-bold text-ink"
+          className="rounded-lg border-[1.5px] border-ink px-7 py-[15px] text-center text-[15px] font-bold text-ink"
         >
           Lihat Project
         </a>

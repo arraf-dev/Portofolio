@@ -52,18 +52,18 @@ export default function Pricing() {
       <p className="mt-3 max-w-[620px] text-base leading-relaxed text-muted">
         Paket transparan untuk kebutuhan institusi &amp; organisasi Anda.
       </p>
-      <div className="mt-10 grid items-start gap-6 [grid-template-columns:repeat(auto-fit,minmax(280px,1fr))]">
+      <div className="mt-10 grid items-start gap-6 [grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr))]">
         {packages.map((pkg) => (
           <div
             key={pkg.name}
-            className={`relative flex flex-col rounded-2xl border-[1.5px] p-7 ${
+            className={`relative flex flex-col rounded-2xl border-[1.5px] p-6 sm:p-7 ${
               pkg.highlight
                 ? "border-accent bg-ink text-white"
                 : "border-line bg-card"
             }`}
           >
             {pkg.highlight && (
-              <span className="absolute -top-[13px] left-7 rounded-full bg-accent px-3.5 py-[5px] text-[11.5px] font-bold text-white">
+              <span className="absolute -top-[13px] left-6 max-w-[calc(100%-3rem)] rounded-full bg-accent px-3.5 py-[5px] text-[11.5px] font-bold leading-snug text-white sm:left-7 sm:max-w-[calc(100%-3.5rem)]">
                 Paling cocok untuk institusi/organisasi
               </span>
             )}
