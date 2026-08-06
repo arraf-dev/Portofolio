@@ -25,15 +25,18 @@ export default function Projects() {
           <article
             className="flex h-full flex-col rounded-2xl border-[1.5px] border-line bg-card p-6 shadow-sm transition-[border-color,box-shadow] hover:border-accent hover:shadow-md sm:p-[30px]"
           >
-            <ProjectMedia project={project} className="mb-5" />
-
-            <p className="text-xs font-bold uppercase tracking-[0.08em] text-accent">
-              {project.category}
-            </p>
-            <h3 className="mt-2 font-display text-[21px] font-extrabold">
-              {project.title}
-            </h3>
-            <p className="mt-1.5 text-sm font-medium text-faint">
+            <div className="flex items-start gap-4">
+              <ProjectMedia project={project} className="flex-none" />
+              <div className="min-w-0">
+                <p className="text-xs font-bold uppercase tracking-[0.08em] text-accent">
+                  {project.category}
+                </p>
+                <h3 className="mt-1.5 font-display text-[21px] font-extrabold">
+                  {project.title}
+                </h3>
+              </div>
+            </div>
+            <p className="mt-3 text-sm font-medium text-faint">
               Untuk: {project.audience}
             </p>
 

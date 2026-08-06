@@ -86,6 +86,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           </Link>
 
           <header className="mt-8">
+            <ProjectMedia project={project} priority className="mb-5" />
             <p className="text-[13px] font-bold uppercase tracking-[0.1em] text-accent">
               {project.category}
             </p>
@@ -105,8 +106,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               </span>
             </div>
           </header>
-
-          <ProjectMedia project={project} priority className="mt-10 sm:mt-12" />
 
           <div className="mt-12 space-y-10">
             <DetailSection title="Ringkasan Proyek">
@@ -156,9 +155,11 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               </DetailSection>
             ) : null}
 
-            <DetailSection title="Screenshot & Gallery">
-              <ProjectMedia project={project} />
-            </DetailSection>
+            {project.screenshots.length ? (
+              <DetailSection title="Screenshot & Gallery">
+                <ProjectMedia project={project} />
+              </DetailSection>
+            ) : null}
 
             <DetailSection title="Teknologi">
               <div className="flex flex-wrap gap-2.5">
