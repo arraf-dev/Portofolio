@@ -1,104 +1,99 @@
-// Screenshot: timpa file di public/projects/ dengan nama yang sama (1280x720 / 16:9)
-const projects = [
-  {
-    title: "TaniSync",
-    description:
-      "Sistem manajemen multi-organisasi berbasis Laravel 12 dengan role-based authentication, export data ke PDF/XLSX/CSV, dan audit logging lengkap. Dirancang untuk kebutuhan administrasi organisasi dengan banyak peran pengguna.",
-    tags: ["Laravel 12", "Livewire", "Tailwind CSS", "MySQL"],
-    link: "https://github.com/arraf-dev/TaniSync",
-    image: "/projects/tanisync.png",
-    demo: null,
-  },
-  {
-    title: "DocuVerify UNY",
-    description:
-      "Sistem verifikasi keaslian dokumen menggunakan SHA-256 hashing. Live digunakan di lingkungan pendidikan untuk memastikan dokumen resmi dapat diverifikasi keasliannya secara mandiri.",
-    tags: ["Next.js 15", "TypeScript", "Prisma", "Supabase"],
-    link: "https://github.com/arraf-dev/DocuVerify-",
-    image: "/projects/docuverify.png",
-    demo: "https://www.araf393.dev",
-  },
-  {
-    title: "Chatbot Kesehatan Mental",
-    description:
-      "Chatbot pendamping kesehatan mental berbasis AI untuk membantu pengguna melakukan self-assessment awal dan mendapatkan informasi dukungan yang relevan.",
-    tags: ["Python", "NLP", "Machine Learning"],
-    link: "https://github.com/arraf-dev/chatbot-mental-health",
-    image: "/projects/chatbot.png",
-    demo: null,
-  },
-];
+import Link from "next/link";
+import { projects } from "@/data/projects";
+import ProjectMedia from "@/components/ProjectMedia";
+import Tilt from "@/components/Tilt";
 
 export default function Projects() {
   return (
-    <section
-      id="projects"
-      className="mx-auto max-w-[1180px] scroll-mt-24 px-5 py-16 sm:px-8 lg:px-14"
-    >
-      <p className="mb-3 text-[13px] font-bold tracking-[0.1em] text-faint">
+    <section id="projects" className="scroll-mt-24 border-y border-line bg-tint">
+      <div className="mx-auto max-w-[1180px] px-5 py-20 sm:px-8 sm:py-24 lg:px-14">
+      <p className="mb-3 flex items-center gap-2.5 text-[13px] font-bold tracking-[0.1em] text-accent">
+        <span aria-hidden="true" className="h-0.5 w-6 rounded-full bg-accent" />
         01 — PROJECT
       </p>
       <h2 className="font-display text-[clamp(1.75rem,3.6vw,2.625rem)] font-extrabold tracking-tight">
-        Featured Projects
+        Studi Kasus &amp; Project
       </h2>
-      <p className="mt-3 max-w-[620px] text-base leading-relaxed text-muted">
-        Beberapa project yang saya bangun — dari sistem informasi organisasi
-        hingga tools verifikasi dokumen.
+      <p className="mt-3 max-w-[680px] text-base leading-relaxed text-muted">
+        Beberapa sistem yang saya bangun untuk membantu pengelolaan data,
+        administrasi, dan layanan informasi.
       </p>
+
       <div className="mt-10 grid gap-6 [grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr))]">
-        {projects.map((p) => (
+        {projects.map((project) => (
+          <Tilt key={project.slug} className="h-full">
           <article
-            key={p.title}
-            className="flex flex-col rounded-[14px] border-[1.5px] border-line bg-card p-6 transition-colors hover:border-accent sm:p-[30px]"
+            className="flex h-full flex-col rounded-2xl border-[1.5px] border-line bg-card p-6 shadow-sm transition-[border-color,box-shadow] hover:border-accent hover:shadow-md sm:p-[30px]"
           >
-            <img
-              src={p.image}
-              alt={`Tampilan ${p.title}`}
-              width={1280}
-              height={720}
-              loading="lazy"
-              className="mb-5 aspect-video w-full rounded-lg border-[1.5px] border-line object-cover"
-            />
-            <h3 className="font-display text-[21px] font-extrabold">{p.title}</h3>
-            <p className="mt-3 flex-1 text-[14.5px] leading-relaxed text-ink/70">
-              {p.description}
+            <ProjectMedia project={project} className="mb-5" />
+
+            <p className="text-xs font-bold uppercase tracking-[0.08em] text-accent">
+              {project.category}
             </p>
-            <div className="mt-5 flex flex-wrap gap-2">
-              {p.tags.map((t) => (
+            <h3 className="mt-2 font-display text-[21px] font-extrabold">
+              {project.title}
+            </h3>
+            <p className="mt-1.5 text-sm font-medium text-faint">
+              Untuk: {project.audience}
+            </p>
+
+            <div className="mt-5 space-y-4 text-[14.5px] leading-relaxed">
+              <div>
+                <h4 className="font-bold text-ink">Masalah</h4>
+                <p className="mt-1 text-ink/70">{project.problem}</p>
+              </div>
+              <div className="flex-1">
+                <h4 className="font-bold text-ink">Solusi</h4>
+                <p className="mt-1 text-ink/70">{project.solution}</p>
+              </div>
+            </div>
+
+            <div
+              className="mt-5 flex flex-wrap gap-2"
+              aria-label={`Teknologi ${project.title}`}
+            >
+              {project.technologies.map((technology) => (
                 <span
-                  key={t}
+                  key={technology}
                   className="rounded-full bg-ink/[0.06] px-3 py-[5px] text-xs font-semibold text-ink/75"
                 >
-                  {t}
+                  {technology}
                 </span>
               ))}
             </div>
-            <div className="mt-5 flex items-center gap-5">
-              {p.demo && (
+
+            <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
+              <Link
+                href={`/studi-kasus/${project.slug}`}
+                className="text-sm font-bold text-accent hover:underline"
+              >
+                Lihat Studi Kasus →
+              </Link>
+              {project.demoUrl ? (
                 <a
-                  href={p.demo}
+                  href={project.demoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm font-bold text-accent hover:underline"
+                  className="text-sm font-semibold text-ink/65 hover:underline"
                 >
-                  Lihat Demo →
+                  Lihat Demo ↗
                 </a>
-              )}
-              <a
-                href={p.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={
-                  p.demo
-                    ? "text-sm font-semibold text-ink/55 hover:underline"
-                    : "text-sm font-bold text-accent hover:underline"
-                }
-              >
-                Lihat Detail →
-              </a>
+              ) : null}
+              {project.repositoryUrl ? (
+                <a
+                  href={project.repositoryUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm font-semibold text-ink/65 hover:underline"
+                >
+                  Lihat Kode ↗
+                </a>
+              ) : null}
             </div>
           </article>
+          </Tilt>
         ))}
+      </div>
       </div>
     </section>
   );

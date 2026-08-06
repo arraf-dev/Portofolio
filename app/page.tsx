@@ -5,30 +5,48 @@ import Pricing from "@/components/Pricing";
 import About from "@/components/About";
 import Contact from "@/components/Contact";
 import BackToTop from "@/components/BackToTop";
+import Footer from "@/components/Footer";
+import Reveal from "@/components/Reveal";
+import { CONTACT_EMAIL, SITE_DESCRIPTION, SITE_URL } from "@/lib/site";
 
 export default function Home() {
+  const personStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Abdul Rafi",
+    url: SITE_URL,
+    email: `mailto:${CONTACT_EMAIL}`,
+    jobTitle: "Pengembang website dan sistem informasi",
+    description: SITE_DESCRIPTION,
+    sameAs: ["https://github.com/arraf-dev"],
+  };
+
   return (
     <div className="relative min-h-screen">
       <Navbar />
-      <main>
+      <main id="main-content">
         <Hero />
-        <Projects />
-        <Pricing />
-        <About />
-        <Contact />
+        <Reveal>
+          <Projects />
+        </Reveal>
+        <Reveal>
+          <Pricing />
+        </Reveal>
+        <Reveal>
+          <About />
+        </Reveal>
+        <Reveal>
+          <Contact />
+        </Reveal>
       </main>
-      <footer className="mx-auto flex max-w-[1180px] flex-wrap items-center justify-between gap-2.5 border-t border-line px-5 py-6 text-[13.5px] text-faint sm:px-8 lg:px-14">
-        <span>© {new Date().getFullYear()} Abdul Rafi</span>
-        <a
-          href="https://github.com/arraf-dev"
-          className="font-medium hover:text-accent"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          github.com/arraf-dev
-        </a>
-      </footer>
+      <Footer />
       <BackToTop />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(personStructuredData).replace(/</g, "\\u003c"),
+        }}
+      />
     </div>
   );
 }

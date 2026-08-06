@@ -1,0 +1,7 @@
+.next
+.claude
+coverage
+node_modules
+output
+package-lock.json
+public
