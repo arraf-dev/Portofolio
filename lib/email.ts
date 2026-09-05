@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 import type { ContactData } from "@/lib/contact";
 import { CONTACT_EMAIL } from "@/lib/site";
+import { buildContactEmail } from "@/lib/contact-email";
 
 export class EmailConfigurationError extends Error {
   constructor() {
@@ -43,10 +44,6 @@ function getEmailConfiguration() {
   };
 }
 
-function cleanSubjectPart(value: string) {
-  return value.replace(/[\r\n]+/g, " ").slice(0, 80);
-}
-
 export async function sendContactEmail(data: ContactData) {
   const config = getEmailConfiguration();
   const transporter = nodemailer.createTransport({
@@ -64,23 +61,11 @@ export async function sendContactEmail(data: ContactData) {
     disableUrlAccess: true,
   });
 
-  const context = data.service
-    ? `\nJenis kebutuhan: ${data.service}`
-    : "\nJenis kebutuhan: Belum dipilih";
-
   const info = await transporter.sendMail({
     from: config.from,
     to: config.to,
     replyTo: data.email,
-    subject: `Permintaan kontak — ${cleanSubjectPart(data.name)}`,
-    text: [
-      `Nama: ${data.name}`,
-      `Email: ${data.email}`,
-      context.trimStart(),
-      "",
-      "Pesan:",
-      data.message,
-    ].join("\n"),
+    ...buildContactEmail(data),
   });
 
   if (!info.accepted.length) {

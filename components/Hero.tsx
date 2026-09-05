@@ -1,60 +1,80 @@
+import Link from "next/link";
+import ProjectVisual from "./ProjectVisual";
 export default function Hero() {
   return (
-    <section
-      id="top"
-      className="relative mx-auto max-w-[1180px] scroll-mt-24 overflow-hidden px-5 pb-16 pt-14 sm:px-8 sm:pb-24 sm:pt-28 lg:px-14"
-    >
-      <div
-        aria-hidden="true"
-        className="hero-decor pointer-events-none absolute inset-0 -z-10"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute right-[4%] top-16 -z-10 hidden lg:block"
-      >
-        <div className="float-3d h-40 w-64 rounded-2xl border border-line bg-card/80 shadow-md backdrop-blur-sm">
-          <div className="flex gap-1.5 border-b border-line p-3">
-            <span className="h-2 w-2 rounded-full bg-brand" />
-            <span className="h-2 w-2 rounded-full bg-line" />
-            <span className="h-2 w-2 rounded-full bg-line" />
+    <section id="top" className="hero-shell scroll-mt-24">
+      <div className="site-container hero-grid">
+        <div className="hero-copy">
+          <p className="eyebrow">
+            <span className="status-dot" /> WEB DEVELOPER · YOGYAKARTA
+          </p>
+          <h1>
+            Ide Anda.
+            <br />
+            Website yang
+            <br />
+            <span className="hero-highlight">bekerja.</span>
+            <span className="hero-asterisk" aria-hidden="true">
+              ✳
+            </span>
+          </h1>
+          <p className="hero-description">
+            Saya Abdul Rafi. Membantu organisasi mengubah kebutuhan menjadi
+            website dan sistem informasi yang mudah digunakan, dikelola, dan
+            dikembangkan.
+          </p>
+          <div className="flex flex-wrap gap-3 mt-8">
+            <a className="button-primary" href="#kontak">
+              Mari diskusikan ide Anda <span aria-hidden="true">↗</span>
+            </a>
+            <a className="button-secondary" href="#projects">
+              Jelajahi karya <span aria-hidden="true">↓</span>
+            </a>
           </div>
-          <div className="space-y-2 p-3">
-            <div className="h-2 w-3/4 rounded bg-tint" />
-            <div className="h-2 w-1/2 rounded bg-tint" />
-            <div className="h-2 w-2/3 rounded bg-brand/40" />
+          <div className="hero-credentials">
+            <span className="avatar-mini">ar.</span>
+            <div>
+              <strong>Dari kebutuhan, menjadi solusi.</strong>
+              <p>Mahasiswa IT UNY · Eks-intern DISKOMINFO Yogyakarta</p>
+            </div>
           </div>
         </div>
-        <div className="float-3d-slow -mt-10 ml-36 h-24 w-40 rounded-xl border border-line bg-tint/90 shadow-sm backdrop-blur-sm">
-          <div className="space-y-2 p-3">
-            <div className="h-2 w-2/3 rounded bg-brand/50" />
-            <div className="h-2 w-1/2 rounded bg-card" />
+        <div className="hero-showcase">
+          <div className="showcase-top">
+            <span>IDE → DESAIN → DEVELOPMENT</span>
+            <span aria-hidden="true">↗</span>
+          </div>
+          <div className="hero-preview">
+            <ProjectVisual kind="tanisync" />
+          </div>
+          <Link href="/studi-kasus/tanisync" className="showcase-caption">
+            <div>
+              <span>PROJECT SPOTLIGHT</span>
+              <h2>TaniSync</h2>
+              <p>Sistem informasi untuk ekosistem pertanian.</p>
+            </div>
+            <span className="round-arrow" aria-hidden="true">
+              ↗
+            </span>
+          </Link>
+          <div className="showcase-note">
+            <span aria-hidden="true">✦</span> Dirancang untuk kebutuhan nyata.
           </div>
         </div>
       </div>
-      <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-line bg-tint px-4 py-1.5 text-[13px] font-bold uppercase tracking-[0.14em] text-accent">
-        Abdul Rafi
-      </p>
-      <h1 className="max-w-[900px] font-display text-[clamp(2rem,4.2vw,3.25rem)] font-extrabold leading-[1.08] tracking-tight">
-        Sistem Informasi yang Rapi dan Mudah Dikelola untuk Institusi Kecil
-      </h1>
-      <p className="mt-7 max-w-[720px] text-[17px] leading-relaxed text-muted">
-        Mahasiswa IT UNY dan eks-intern DISKOMINFO Yogyakarta. Membantu ormawa,
-        prodi, sekolah, padukuhan, dan organisasi kecil membangun website serta
-        sistem informasi sesuai alur kerja mereka.
-      </p>
-      <div className="mt-9 flex flex-col gap-3.5 sm:flex-row sm:flex-wrap">
-        <a
-          href="#kontak"
-          className="rounded-lg bg-accent px-7 py-[15px] text-center text-[15px] font-bold text-accent-ink transition-colors hover:bg-accent-hover"
-        >
-          Diskusikan Kebutuhan
-        </a>
-        <a
-          href="#projects"
-          className="rounded-lg border-[1.5px] border-ink px-7 py-[15px] text-center text-[15px] font-bold text-ink transition-colors hover:border-accent hover:text-accent"
-        >
-          Lihat Studi Kasus
-        </a>
+      <div className="audience-strip site-container">
+        <p>
+          UNTUK ORGANISASI
+          <br />
+          <strong>yang ingin melangkah maju.</strong>
+        </p>
+        <div>
+          <span>Ormawa</span>
+          <span>Program Studi</span>
+          <span>Sekolah</span>
+          <span>Padukuhan</span>
+          <span>Organisasi</span>
+        </div>
       </div>
     </section>
   );

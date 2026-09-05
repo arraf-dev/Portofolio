@@ -24,7 +24,8 @@ export default function ThemeToggle() {
     <button
       type="button"
       onClick={toggle}
-      aria-label="Ganti tema"
+      aria-label={dark ? "Aktifkan tema terang" : "Aktifkan tema gelap"}
+      aria-pressed={dark}
       className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg text-muted transition-colors hover:bg-tint hover:text-accent"
     >
       {dark ? (

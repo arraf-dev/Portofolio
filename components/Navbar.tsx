@@ -16,6 +16,7 @@ export default function Navbar() {
   const [active, setActive] = useState<string | null>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -41,6 +42,28 @@ export default function Navbar() {
     }
 
     function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Tab" && open) {
+        const elements =
+          menuRef.current?.querySelectorAll<HTMLElement>("a[href], button");
+        if (!elements?.length) return;
+        const first = elements[0];
+        const last = elements[elements.length - 1];
+        if (
+          event.shiftKey &&
+          (document.activeElement === first ||
+            !menuRef.current?.contains(document.activeElement))
+        ) {
+          event.preventDefault();
+          last.focus();
+        } else if (
+          !event.shiftKey &&
+          (document.activeElement === last ||
+            !menuRef.current?.contains(document.activeElement))
+        ) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
       if (event.key === "Escape" && open) {
         setOpen(false);
         menuButtonRef.current?.focus();
@@ -48,10 +71,16 @@ export default function Navbar() {
     }
 
     document.addEventListener("keydown", handleKeyDown);
+    const desktop = window.matchMedia("(min-width: 1024px)");
+    const closeOnDesktop = () => {
+      if (desktop.matches) setOpen(false);
+    };
+    desktop.addEventListener("change", closeOnDesktop);
 
     return () => {
       document.body.style.overflow = "";
       document.removeEventListener("keydown", handleKeyDown);
+      desktop.removeEventListener("change", closeOnDesktop);
     };
   }, [open]);
 
@@ -63,19 +92,19 @@ export default function Navbar() {
     }`;
 
   return (
-    <header className="sticky top-0 z-50 border-b border-line bg-paper/90 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-line bg-paper">
       <nav
         aria-label="Navigasi utama"
-        className="mx-auto flex max-w-[1180px] items-center justify-between px-5 py-[18px] sm:px-8 lg:px-14"
+        className="site-container flex items-center justify-between py-[18px]"
       >
         <Link
           href="/#top"
           className="flex-shrink-0 font-display text-xl font-extrabold tracking-tight"
         >
-          Abdul Rafi<span className="text-accent">.</span>
+          abdulrafi<span className="text-accent">.</span>
         </Link>
 
-        <div className="hidden items-center gap-7 md:flex">
+        <div className="hidden items-center gap-7 lg:flex">
           {links.map((l) => (
             <Link
               key={l.id}
@@ -90,19 +119,19 @@ export default function Navbar() {
             href="/#kontak"
             className="whitespace-nowrap rounded-full bg-ink px-[22px] py-2.5 text-sm font-semibold text-paper transition-colors hover:bg-accent hover:text-accent-ink"
           >
-            Diskusikan Kebutuhan
+            Mari ngobrol ↗
           </Link>
           <ThemeToggle />
         </div>
 
-        <div className="flex items-center gap-1 md:hidden">
+        <div className="flex items-center gap-1 lg:hidden">
           <ThemeToggle />
           <button
             ref={menuButtonRef}
-          type="button"
-          aria-label="Buka menu"
-          aria-controls="mobile-navigation"
-          aria-expanded={open}
+            type="button"
+            aria-label="Buka menu"
+            aria-controls="mobile-navigation"
+            aria-expanded={open}
             onClick={() => setOpen(true)}
             className="flex min-h-11 min-w-11 flex-col items-center justify-center gap-[5px] rounded-lg"
           >
@@ -115,6 +144,10 @@ export default function Navbar() {
       {open && (
         <div
           id="mobile-navigation"
+          ref={menuRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Menu navigasi"
           className="fixed inset-0 z-[100] flex flex-col bg-paper px-5 py-5 sm:px-8"
         >
           <div className="flex items-center justify-between">

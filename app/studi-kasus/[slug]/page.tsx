@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import ProjectEvidence from "@/components/ProjectEvidence";
 import ProjectMedia from "@/components/ProjectMedia";
+import ProjectVisual from "@/components/ProjectVisual";
 import { getProjectBySlug, projects } from "@/data/projects";
 import { SITE_URL } from "@/lib/site";
 
@@ -86,7 +87,13 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           </Link>
 
           <header className="mt-8">
-            <ProjectMedia project={project} priority className="mb-5" />
+            <div className="mb-8 overflow-hidden rounded-xl">
+              {project.screenshots.length ? (
+                <ProjectMedia project={project} priority />
+              ) : (
+                <ProjectVisual kind={project.slug} />
+              )}
+            </div>
             <p className="text-[13px] font-bold uppercase tracking-[0.1em] text-accent">
               {project.category}
             </p>

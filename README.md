@@ -72,6 +72,33 @@ Tombol disembunyikan jika variabel kosong atau tidak valid. Karena menggunakan
 prefix `NEXT_PUBLIC_`, nomor akan terlihat di client dan harus dianggap sebagai
 informasi publik.
 
+## Integrasi layanan dan kontak
+
+Katalog paket berada di `data/services.ts` dan dipakai bersama oleh kartu harga,
+pilihan form, validasi API, serta ringkasan paket di email. Ubah katalog ini saat
+menambah layanan atau menyesuaikan harga. Layanan boleh kosong, tetapi nilai yang
+tidak ada di katalog ditolak oleh server.
+
+`POST /api/contact` menerima JSON berisi `name`, `email`, `service` (opsional),
+`message`, dan `website` (honeypot, harus kosong). Body dibatasi 20.000 byte saat
+stream dibaca, termasuk jika Content-Length tidak tersedia. Respons tidak di-cache.
+
+- `200`: SMTP menerima pesan; bukan jaminan pesan sudah masuk inbox.
+- `400`: JSON, data form, atau honeypot tidak valid; validasi field mengembalikan `errors`.
+- `413` / `415`: body terlalu besar / content type bukan application/json.
+- `429`: terlalu banyak percobaan; `Retry-After` dan `retryAfterSeconds` berisi waktu tunggu.
+- `503`: konfigurasi SMTP belum lengkap.
+- `502`: pengiriman SMTP gagal.
+
+Email tersedia dalam HTML dan teks biasa, dengan Reply-To ke pengirim. Konten
+pengguna di-escape sebelum dimasukkan ke HTML. Harga di email hanya indikasi paket,
+bukan penawaran final. Tidak ada balasan otomatis ke pengunjung atau penyimpanan
+pesan ke database. Test transport memakai mock dan tidak mengirim email sungguhan.
+
+Rate limit tetap per instance; proxy hosting harus menimpa header IP pengunjung
+agar header dari klien tidak dipercaya begitu saja. Untuk deployment multi-instance,
+gunakan rate limit terdistribusi melalui penyimpanan eksternal jika dibutuhkan.
+
 ## Data studi kasus
 
 Seluruh kartu dan halaman studi kasus memakai `data/projects.ts`. Untuk

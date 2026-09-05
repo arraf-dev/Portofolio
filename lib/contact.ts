@@ -1,3 +1,5 @@
+import { serviceOptions } from "@/data/services";
+
 export const CONTACT_LIMITS = {
   name: 80,
   email: 254,
@@ -65,6 +67,13 @@ export function validateContactPayload(input: unknown): {
 
   if (data.service.length > CONTACT_LIMITS.service) {
     errors.service = `Pilihan kebutuhan maksimal ${CONTACT_LIMITS.service} karakter.`;
+  } else if (
+    record.service !== undefined &&
+    typeof record.service !== "string"
+  ) {
+    errors.service = "Pilihan kebutuhan tidak valid.";
+  } else if (data.service && !serviceOptions.includes(data.service)) {
+    errors.service = "Pilih jenis kebutuhan yang tersedia.";
   }
 
   if (!data.message) {

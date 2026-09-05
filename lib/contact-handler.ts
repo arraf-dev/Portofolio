@@ -7,6 +7,36 @@ import { EmailConfigurationError, sendContactEmail } from "@/lib/email";
 
 const MAX_BODY_BYTES = 20_000;
 
+class BodyTooLargeError extends Error {}
+
+async function readJsonBody(request: Request): Promise<unknown> {
+  if (!request.body) throw new SyntaxError("Missing body");
+  const reader = request.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let bytes = 0;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      bytes += value.byteLength;
+      if (bytes > MAX_BODY_BYTES) {
+        void reader.cancel().catch(() => {});
+        throw new BodyTooLargeError();
+      }
+      chunks.push(value);
+    }
+  } finally {
+    reader.releaseLock();
+  }
+  const body = new Uint8Array(bytes);
+  let offset = 0;
+  for (const chunk of chunks) {
+    body.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(body));
+}
+
 type ContactHandlerDependencies = {
   sendEmail?: (data: ContactData) => Promise<void>;
   consumeRateLimit?: (key: string) => RateLimitResult;
@@ -41,7 +71,7 @@ export function createContactHandler(
 
   return async function handleContactRequest(request: Request) {
     const contentType = request.headers.get("content-type") || "";
-    if (!contentType.toLowerCase().includes("application/json")) {
+    if (contentType.split(";")[0].trim().toLowerCase() !== "application/json") {
       return jsonResponse(
         { message: "Format permintaan tidak didukung." },
         415,
@@ -53,27 +83,26 @@ export function createContactHandler(
       return jsonResponse({ message: "Pesan terlalu besar." }, 413);
     }
 
-    let input: unknown;
-    try {
-      input = await request.json();
-    } catch {
-      return jsonResponse({ message: "Data form tidak dapat dibaca." }, 400);
-    }
-
-    if (JSON.stringify(input).length > MAX_BODY_BYTES) {
-      return jsonResponse({ message: "Pesan terlalu besar." }, 413);
-    }
-
     const rateLimit = consumeRateLimit(getClientKey(request));
     if (!rateLimit.allowed) {
       return jsonResponse(
         {
           message:
             "Terlalu banyak percobaan. Silakan tunggu sebelum mengirim lagi.",
+          retryAfterSeconds: rateLimit.retryAfterSeconds,
         },
         429,
         { "Retry-After": String(rateLimit.retryAfterSeconds) },
       );
+    }
+
+    let input: unknown;
+    try {
+      input = await readJsonBody(request);
+    } catch (error) {
+      return error instanceof BodyTooLargeError
+        ? jsonResponse({ message: "Pesan terlalu besar." }, 413)
+        : jsonResponse({ message: "Data form tidak dapat dibaca." }, 400);
     }
 
     const { data, errors } = validateContactPayload(input);

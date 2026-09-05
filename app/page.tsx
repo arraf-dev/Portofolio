@@ -7,6 +7,8 @@ import Contact from "@/components/Contact";
 import BackToTop from "@/components/BackToTop";
 import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
+import Process from "@/components/Process";
+import FAQ from "@/components/FAQ";
 import { CONTACT_EMAIL, SITE_DESCRIPTION, SITE_URL } from "@/lib/site";
 
 export default function Home() {
@@ -34,6 +36,12 @@ export default function Home() {
         </Reveal>
         <Reveal>
           <About />
+        </Reveal>
+        <Reveal>
+          <Process />
+        </Reveal>
+        <Reveal>
+          <FAQ />
         </Reveal>
         <Reveal>
           <Contact />

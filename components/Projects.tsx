@@ -1,102 +1,84 @@
 import Link from "next/link";
 import { projects } from "@/data/projects";
-import ProjectMedia from "@/components/ProjectMedia";
-import Tilt from "@/components/Tilt";
-
+import ProjectVisual from "./ProjectVisual";
 export default function Projects() {
+  const ordered = [projects[1], projects[0], projects[2]];
   return (
-    <section id="projects" className="scroll-mt-24 border-y border-line bg-tint">
-      <div className="mx-auto max-w-[1180px] px-5 py-20 sm:px-8 sm:py-24 lg:px-14">
-      <p className="mb-3 flex items-center gap-2.5 text-[13px] font-bold tracking-[0.1em] text-accent">
-        <span aria-hidden="true" className="h-0.5 w-6 rounded-full bg-accent" />
-        01 — PROJECT
-      </p>
-      <h2 className="font-display text-[clamp(1.75rem,3.6vw,2.625rem)] font-extrabold tracking-tight">
-        Studi Kasus &amp; Project
-      </h2>
-      <p className="mt-3 max-w-[680px] text-base leading-relaxed text-muted">
-        Beberapa sistem yang saya bangun untuk membantu pengelolaan data,
-        administrasi, dan layanan informasi.
-      </p>
-
-      <div className="mt-10 grid gap-6 [grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr))]">
-        {projects.map((project) => (
-          <Tilt key={project.slug} className="h-full">
+    <section
+      id="projects"
+      className="section-space site-container scroll-mt-24"
+    >
+      <div className="section-heading">
+        <div>
+          <p className="eyebrow">01 / SELECTED WORK</p>
+          <h2>
+            Setiap kebutuhan,
+            <br />
+            <span className="text-muted">punya ceritanya.</span>
+          </h2>
+        </div>
+        <p>
+          Eksplorasi solusi yang saya bangun, dari pengelolaan data hingga
+          pengalaman percakapan.
+        </p>
+      </div>
+      <div className="work-grid">
+        {ordered.map((project, index) => (
           <article
-            className="flex h-full flex-col rounded-2xl border-[1.5px] border-line bg-card p-6 shadow-sm transition-[border-color,box-shadow] hover:border-accent hover:shadow-md sm:p-[30px]"
+            key={project.slug}
+            className={`work-card ${index === 0 ? "work-featured" : ""}`}
           >
-            <div className="flex items-start gap-4">
-              <ProjectMedia project={project} className="flex-none" />
-              <div className="min-w-0">
-                <p className="text-xs font-bold uppercase tracking-[0.08em] text-accent">
-                  {project.category}
-                </p>
-                <h3 className="mt-1.5 font-display text-[21px] font-extrabold">
-                  {project.title}
-                </h3>
-              </div>
-            </div>
-            <p className="mt-3 text-sm font-medium text-faint">
-              Untuk: {project.audience}
-            </p>
-
-            <div className="mt-5 space-y-4 text-[14.5px] leading-relaxed">
-              <div>
-                <h4 className="font-bold text-ink">Masalah</h4>
-                <p className="mt-1 text-ink/70">{project.problem}</p>
-              </div>
-              <div className="flex-1">
-                <h4 className="font-bold text-ink">Solusi</h4>
-                <p className="mt-1 text-ink/70">{project.solution}</p>
-              </div>
-            </div>
-
-            <div
-              className="mt-5 flex flex-wrap gap-2"
-              aria-label={`Teknologi ${project.title}`}
+            <Link
+              href={`/studi-kasus/${project.slug}`}
+              className="work-image"
+              aria-label={`Lihat studi kasus ${project.title}`}
             >
-              {project.technologies.map((technology) => (
-                <span
-                  key={technology}
-                  className="rounded-full bg-ink/[0.06] px-3 py-[5px] text-xs font-semibold text-ink/75"
-                >
-                  {technology}
+              <ProjectVisual kind={project.slug} />
+              <span className="work-open" aria-hidden="true">
+                ↗
+              </span>
+            </Link>
+            <div className="work-body">
+              <div className="work-meta">
+                <span>
+                  0{index + 1} / {project.status}
                 </span>
-              ))}
-            </div>
-
-            <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
+                <span>DEVELOPMENT</span>
+              </div>
               <Link
                 href={`/studi-kasus/${project.slug}`}
-                className="text-sm font-bold text-accent hover:underline"
+                className="work-title"
               >
-                Lihat Studi Kasus →
+                <h3>{project.title}</h3>
+                <span aria-hidden="true">↗</span>
               </Link>
-              {project.demoUrl ? (
-                <a
-                  href={project.demoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm font-semibold text-ink/65 hover:underline"
+              <p>{project.summary}</p>
+              <div className="work-tags">
+                {project.technologies.slice(0, 3).map((t) => (
+                  <span key={t}>{t}</span>
+                ))}
+              </div>
+              <div className="mt-5 flex gap-5 text-sm font-semibold">
+                <Link
+                  href={`/studi-kasus/${project.slug}`}
+                  className="hover:underline"
                 >
-                  Lihat Demo ↗
-                </a>
-              ) : null}
-              {project.repositoryUrl ? (
-                <a
-                  href={project.repositoryUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm font-semibold text-ink/65 hover:underline"
-                >
-                  Lihat Kode ↗
-                </a>
-              ) : null}
+                  Baca studi kasus →
+                </Link>
+                {project.demoUrl && (
+                  <a
+                    href={project.demoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted hover:underline"
+                  >
+                    Live demo ↗
+                  </a>
+                )}
+              </div>
             </div>
           </article>
-          </Tilt>
         ))}
-      </div>
       </div>
     </section>
   );
